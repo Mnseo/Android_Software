@@ -9,9 +9,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity {
-    EditText editText;
-    Button button;
+    boolean resultBoolean;
+    int a, b, result;
+    String resultString;
+    EditText editText, editText2;
+    Button plusButton, minusButton;
     TextView textView;
 
     @Override
@@ -20,25 +24,77 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         editText = (EditText) findViewById(R.id.editText);
-        button = (Button) findViewById(R.id.button);
+        editText2 = (EditText) findViewById(R.id.editText2);
+
+        plusButton = (Button) findViewById(R.id.button);
+        minusButton = (Button) findViewById(R.id.button2);
+
         textView = (TextView) findViewById(R.id.textView);
 
-        button.setOnClickListener(new View.OnClickListener() {
+
+        class ButtonListener implements View.OnClickListener {
             @Override
             public void onClick(View view) {
-                String fahrenStr = editText.getText().toString();
-                fahrenStr = fahrenStr.trim();
-                if(fahrenStr.equals("")) {
-                    textView.setText("화씨값을 입력하세요~");
-                    Toast.makeText(getApplicationContext(), "화씨값을 입력!!",
-                            Toast.LENGTH_LONG).show();
+                //입력받은 테스트 String으로 불러오기
+                String aText = editText.getText().toString();
+                String bText = editText2.getText().toString();
 
-                } else {
-                    Double fahren = Double.parseDouble(fahrenStr);
-                    Double celsius = (fahren - 32.0) / 1.8;
-                    textView.setText("섭씨 " + celsius.toString());
+                //빈칸 자르기
+                aText = aText.trim();
+                bText = bText.trim();
+
+                //비어있는 값 확인하기
+                resultBoolean = checkTextInput(aText, bText);
+
+                if (view == plusButton && resultBoolean == true) {
+                        a = Integer.parseInt(aText);
+                        b = Integer.parseInt(bText);
+                        result = a + b;
+                        resultString = Integer.toString(result);
+                        textView.setText("계산 결과: " + resultString);
+
+                }
+                else if (view == minusButton && resultBoolean == true) {
+                    a = Integer.parseInt(aText);
+                    b = Integer.parseInt(bText);
+                    result = a - b;
+                    resultString = Integer.toString(result);
+                    textView.setText("계산 결과: " + resultString);
+
                 }
             }
-        });
+        }
+        ButtonListener listener = new ButtonListener();
+        plusButton.setOnClickListener(listener);
+        minusButton.setOnClickListener(listener);
+
+    }
+
+    private boolean checkTextInput(String a, String b) {
+        //둘 다 비어있을때
+        if(a.equals("") && b.equals("")) {
+            Toast.makeText(getApplicationContext(), "숫자를 입력해주세요", Toast.LENGTH_SHORT).show();
+            textView.setText("숫자 두개를 모두 입력하세요");
+            return false;
+        }
+
+        //둘 중 하나만 비어있을때
+        else if(a.equals("") || b.equals(""))
+            {
+                //숫자 1만 비어있을때
+                if(a.equals("") || b.isEmpty() == false) {
+                    Toast.makeText(getApplicationContext(), "숫자 1을 입력하세요", Toast.LENGTH_SHORT).show();
+                    textView.setText("숫자 1을 입력하세요");
+                    return false;
+                }
+                //숫자 2만 비어있을때
+                else if (b.equals("") || a.isEmpty() == false) {
+                Toast.makeText(getApplicationContext(), "숫자 2를 입력하세요", Toast.LENGTH_SHORT).show();
+                textView.setText("숫자 2를 입력하세요");
+                return false;
+                }
+            }
+            return true;
+
     }
 }
