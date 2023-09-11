@@ -57,6 +57,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //람다식으로 작성한 코드
+        button1.setOnClickListener(view -> {
+                Toast.makeText(getApplicationContext(), "첫번째 버튼을 눌렀어요", Toast.LENGTH_SHORT).show();
+        });
+        button2.setOnClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "두번째 버튼을 눌렀어요", Toast.LENGTH_SHORT).show();
+        });
+
         ButtonListener listener = new ButtonListener();
         button1.setOnClickListener(listener);
         button2.setOnClickListener(listener);
