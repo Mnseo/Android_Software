@@ -4,81 +4,98 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.Button;t
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity {
-    Button button1, button2;
+    boolean resultBoolean;
+    int a, b, result;
+    String resultString;
+    EditText editText, editText2;
+    Button plusButton, minusButton;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button1 = (Button) findViewById(R.id.button1);
-        button2 = (Button) findViewById(R.id.button2);
+
+        editText = (EditText) findViewById(R.id.editText);
+        editText2 = (EditText) findViewById(R.id.editText2);
+
+        plusButton = (Button) findViewById(R.id.button);
+        minusButton = (Button) findViewById(R.id.button2);
+
+        textView = (TextView) findViewById(R.id.textView);
 
 
-//   함축2 - 교재 코드
-/*
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "버튼을 눌렀어요",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-*/
-
-//  함축1 - 중간형 코드(익명 클래스)
-/*
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "버튼을 눌렀어요",
-                        Toast.LENGTH_SHORT).show();
-            }
-        };
-        button1.setOnClickListener(listener);
-*/
-
-        //내부 클래스
         class ButtonListener implements View.OnClickListener {
             @Override
             public void onClick(View view) {
-                if (view == button1) {
-                    Toast.makeText(getApplicationContext(), "첫번째 버튼을 눌렀어요",
-                            Toast.LENGTH_SHORT).show();
-                } else if (view == button2) {
-                    Toast.makeText(getApplicationContext(), "두번째 버튼을 눌렀어요",
-                            Toast.LENGTH_SHORT).show();
-                }
+                //입력받은 테스트 String으로 불러오기
+                String aText = editText.getText().toString();
+                String bText = editText2.getText().toString();
 
+                //빈칸 자르기
+                aText = aText.trim();
+                bText = bText.trim();
+
+                //비어있는 값 확인하기
+                resultBoolean = checkTextInput(aText, bText);
+
+                if (view == plusButton && resultBoolean == true) {
+                        a = Integer.parseInt(aText);
+                        b = Integer.parseInt(bText);
+                        result = a + b;
+                        resultString = Integer.toString(result);
+                        textView.setText("계산 결과: " + resultString);
+
+                }
+                else if (view == minusButton && resultBoolean == true) {
+                    a = Integer.parseInt(aText);
+                    b = Integer.parseInt(bText);
+                    result = a - b;
+                    resultString = Integer.toString(result);
+                    textView.setText("계산 결과: " + resultString);
+
+                }
             }
         }
-
-        //람다식으로 작성한 코드
-        button1.setOnClickListener(view -> {
-                Toast.makeText(getApplicationContext(), "첫번째 버튼을 눌렀어요", Toast.LENGTH_SHORT).show();
-        });
-        button2.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "두번째 버튼을 눌렀어요", Toast.LENGTH_SHORT).show();
-        });
-
         ButtonListener listener = new ButtonListener();
-        button1.setOnClickListener(listener);
-        button2.setOnClickListener(listener);
+        plusButton.setOnClickListener(listener);
+        minusButton.setOnClickListener(listener);
 
     }
 
-//    //외부 클래스
-//    private class ButtonListener implements View.OnClickListener {
-//        @Override
-//        public void onClick(View view) {
-//            Toast.makeText(getApplicationContext(), "버튼을 눌렀어요", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    private boolean checkTextInput(String a, String b) {
+        //둘 다 비어있을때
+        if(a.equals("") && b.equals("")) {
+            Toast.makeText(getApplicationContext(), "숫자를 입력해주세요", Toast.LENGTH_SHORT).show();
+            textView.setText("숫자 두개를 모두 입력하세요");
+            return false;
+        }
+
+        //둘 중 하나만 비어있을때
+        else if(a.equals("") || b.equals(""))
+            {
+                //숫자 1만 비어있을때
+                if(a.equals("") || b.isEmpty() == false) {
+                    Toast.makeText(getApplicationContext(), "숫자 1을 입력하세요", Toast.LENGTH_SHORT).show();
+                    textView.setText("숫자 1을 입력하세요");
+                    return false;
+                }
+                //숫자 2만 비어있을때
+                else if (b.equals("") || a.isEmpty() == false) {
+                Toast.makeText(getApplicationContext(), "숫자 2를 입력하세요", Toast.LENGTH_SHORT).show();
+                textView.setText("숫자 2를 입력하세요");
+                return false;
+                }
+            }
+            return true;
+
+    }
 }
-
-
-
