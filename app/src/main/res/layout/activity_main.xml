@@ -64,8 +64,13 @@
                 android:text="파이"/>
 
         </RadioGroup>
-
-
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:visibility="invisible"
+        android:layout_marginTop="150dp"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
