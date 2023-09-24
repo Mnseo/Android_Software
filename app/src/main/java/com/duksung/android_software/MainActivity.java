@@ -2,83 +2,72 @@ package com.duksung.android_software;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity {
-    Button button1, button2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+      
         setContentView(R.layout.activity_main);
+        editText = (EditText) findViewById(R.id.editText);
+        btn1 = (Button) findViewById(R.id.btn1); btn2 = (Button) findViewById(R.id.btn2);
+        radioGroup = findViewById(R.id.radioGroup);
+        imageView = (ImageView) findViewById(R.id.imageView);
 
-        button1 = (Button) findViewById(R.id.button1);
-        button2 = (Button) findViewById(R.id.button2);
-
-
-//   함축2 - 교재 코드
-/*
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "버튼을 눌렀어요",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-*/
-
-//  함축1 - 중간형 코드(익명 클래스)
-/*
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "버튼을 눌렀어요",
-                        Toast.LENGTH_SHORT).show();
+        View.OnClickListener buttonClickListener = view -> {
+            String text = editText.getText().toString().trim();
+            switch (view.getId()) {
+                case R.id.btn1:
+                    // btn1이 클릭됐을 때의 동작
+                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.btn2:
+                    // btn2가 클릭됐을 때의 동작 (암시적 인텐트)
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(text));
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(this, "No application can handle this URL!", Toast.LENGTH_SHORT).show();
+                    }
             }
         };
-        button1.setOnClickListener(listener);
-*/
 
-        //내부 클래스
-        class ButtonListener implements View.OnClickListener {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                if (view == button1) {
-                    Toast.makeText(getApplicationContext(), "첫번째 버튼을 눌렀어요",
-                            Toast.LENGTH_SHORT).show();
-                } else if (view == button2) {
-                    Toast.makeText(getApplicationContext(), "두번째 버튼을 눌렀어요",
-                            Toast.LENGTH_SHORT).show();
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.radio1:
+                        imageView.setImageResource(R.drawable.oreo);
+                        imageView.setVisibility(View.VISIBLE);
+                        Log.d("image Resource", "radio1");
+                        break;
+                    case R.id.radio2:
+                        imageView.setImageResource(R.drawable.pie);
+                        imageView.setVisibility(View.VISIBLE);
+                        Log.d("image Resource", "radio2");
+                        break;
                 }
-
             }
-        }
-
-        //람다식으로 작성한 코드
-        button1.setOnClickListener(view -> {
-                Toast.makeText(getApplicationContext(), "첫번째 버튼을 눌렀어요", Toast.LENGTH_SHORT).show();
-        });
-        button2.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "두번째 버튼을 눌렀어요", Toast.LENGTH_SHORT).show();
         });
 
-        ButtonListener listener = new ButtonListener();
-        button1.setOnClickListener(listener);
-        button2.setOnClickListener(listener);
+        btn1.setOnClickListener(buttonClickListener);
+        btn2.setOnClickListener(buttonClickListener);
 
     }
-
-//    //외부 클래스
-//    private class ButtonListener implements View.OnClickListener {
-//        @Override
-//        public void onClick(View view) {
-//            Toast.makeText(getApplicationContext(), "버튼을 눌렀어요", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 }
-
-
 
