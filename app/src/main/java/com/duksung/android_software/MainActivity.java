@@ -16,18 +16,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity {
-    EditText editText;
-    Button btn1, btn2;
-    RadioGroup radioGroup;
-    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+      
         setContentView(R.layout.activity_main);
-
-        //xml - 부착
         editText = (EditText) findViewById(R.id.editText);
         btn1 = (Button) findViewById(R.id.btn1); btn2 = (Button) findViewById(R.id.btn2);
         radioGroup = findViewById(R.id.radioGroup);
@@ -74,3 +70,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
