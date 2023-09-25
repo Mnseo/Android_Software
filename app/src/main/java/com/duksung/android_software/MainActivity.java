@@ -1,70 +1,91 @@
 package com.duksung.android_software;
 
+import android.content.Intent;
+import android.os.Build;
+import android.widget.DatePicker;
+import android.widget.RadioButton;
+import android.widget.TimePicker;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioGroup;
-import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
+    Button button;
+    RadioButton rdoDate, rdoTime;
+    DatePicker datePicker;
+    TimePicker timePicker;
+    String date, time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       
         setContentView(R.layout.activity_main);
-        editText = (EditText) findViewById(R.id.editText);
-        btn1 = (Button) findViewById(R.id.btn1); btn2 = (Button) findViewById(R.id.btn2);
-        radioGroup = findViewById(R.id.radioGroup);
-        imageView = (ImageView) findViewById(R.id.imageView);
+//        Log.i("lifecycle", "Main:onCreate");
 
-        View.OnClickListener buttonClickListener = view -> {
-            String text = editText.getText().toString().trim();
-            switch (view.getId()) {
-                case R.id.btn1:
-                    // btn1이 클릭됐을 때의 동작
-                    Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.btn2:
-                    // btn2가 클릭됐을 때의 동작 (암시적 인텐트)
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(text));
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(this, "No application can handle this URL!", Toast.LENGTH_SHORT).show();
-                    }
-            }
-        };
+        button = (Button) findViewById(R.id.button);
+        rdoDate = (RadioButton) findViewById(R.id.radioButton);
+        rdoTime = (RadioButton) findViewById(R.id.radioButton2);
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.radio1:
-                        imageView.setImageResource(R.drawable.oreo);
-                        imageView.setVisibility(View.VISIBLE);
-                        Log.d("image Resource", "radio1");
-                        break;
-                    case R.id.radio2:
-                        imageView.setImageResource(R.drawable.pie);
-                        imageView.setVisibility(View.VISIBLE);
-                        Log.d("image Resource", "radio2");
-                        break;
-                }
+        timePicker = (TimePicker) findViewById(R.id.timePicker);
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
+        // 처음에는 두 picker를 안보이게 설정
+        timePicker.setVisibility(View.INVISIBLE);
+        datePicker.setVisibility(View.INVISIBLE);
+
+        rdoDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                timePicker.setVisibility(View.INVISIBLE);
+                datePicker.setVisibility(View.VISIBLE);
             }
         });
 
-        btn1.setOnClickListener(buttonClickListener);
-        btn2.setOnClickListener(buttonClickListener);
+        rdoTime.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                timePicker.setVisibility(View.VISIBLE);
+                datePicker.setVisibility(View.INVISIBLE);
+            }
+        });
 
+
+        datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
+                date = i + "/" + (i1+1) + "/" + i2;
+            }
+        });
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                time = timePicker.getHour() + ":" + timePicker.getMinute();
+                String appointment = date + " " + time;
+                Toast.makeText(getApplicationContext(), appointment, Toast.LENGTH_LONG).show();
+//                Intent intent = new Intent(getApplicationContext(), MemoActivity.class);
+//                intent.putExtra("appointment", appointment);
+//                startActivity(intent);
+            }
+        });
     }
-}
 
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        android.util.Log.i("lifecycle", "Main:onResume");
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        android.util.Log.i("lifecycle", "Main:onStop");
+//    }
+//
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        android.util.Log.i("lifecycle", "Main:onRestart");
+//    }
+
+}
