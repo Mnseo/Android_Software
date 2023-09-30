@@ -9,11 +9,13 @@
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="정수" />
+        android:ems="10"
+        android:hint="정수"
+        android:maxLines="1"
+        android:inputType="numberSigned" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -56,11 +58,13 @@
         android:id="@+id/editText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="정수" />
+        android:hint="정수"
+        android:maxLines="1"
+        android:ems="10"
+        android:inputType="numberSigned" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
