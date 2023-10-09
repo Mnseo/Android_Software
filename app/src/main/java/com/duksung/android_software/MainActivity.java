@@ -1,7 +1,14 @@
 package com.duksung.android_software;
 
+import android.content.Intent;
+import android.os.Build;
+import android.widget.DatePicker;
+import android.widget.RadioButton;
+import android.widget.TimePicker;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+\
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -22,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+      
         setContentView(R.layout.activity_main);
 
         button = (Button) findViewById(R.id.button1);
@@ -102,6 +110,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return true;
-
     }
+
 }
