@@ -16,12 +16,11 @@ public class MainActivity extends AppCompatActivity {
         Suit suits[] = Suit.values();
         Rank ranks[] = Rank.values();
         ArrayList<Card> cards = new ArrayList<Card>();
-        for(int i=0; i<4; i++) {
-            for(int j=0; j<13; j++) {
-                Card c = new Card(suits[i], ranks[j]);
-                c.flip();
-                cards.add(c);
-            }
+        // card 5장만 생성
+        for (int i = 0; i < 5; i++) {
+            Card c = new Card(suits[i % 4], ranks[i % 13]);
+            c.flip();
+            cards.add(c);
         }
         for(Card c : cards) {
             System.out.println(c.description());
