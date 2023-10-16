@@ -1,7 +1,6 @@
 package com.duksung.android_software;
 
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -129,17 +128,18 @@ public class MainActivity extends AppCompatActivity {
 
         remainResult.setText(remainText);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                yourScore = calculateScore(yourCards);
-                myScore = calculateScore(myCards);
-                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
-                intent.putExtra("yourScore", yourScore);
-                intent.putExtra("myScore", myScore);
-                startActivity(intent);
-            }
-        });
+        //button ºÎÂøÀº ÇÑ¹ø¸¸ ÇØµµ ±¦ÂúÀ½
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                yourScore = calculateScore(yourCards);
+//                myScore = calculateScore(myCards);
+//                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
+//                intent.putExtra("yourScore", yourScore);
+//                intent.putExtra("myScore", myScore);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 
