@@ -128,19 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
         remainResult.setText(remainText);
 
-        //button 부착은 한번만 해도 괜찮음
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                yourScore = calculateScore(yourCards);
-//                myScore = calculateScore(myCards);
-//                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
-//                intent.putExtra("yourScore", yourScore);
-//                intent.putExtra("myScore", myScore);
-//                startActivity(intent);
-//            }
-//        });
-
     }
 
     // 카드 점수 계산 함수
