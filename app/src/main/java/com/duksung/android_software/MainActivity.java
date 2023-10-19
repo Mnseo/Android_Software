@@ -100,7 +100,11 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK) {
             String result = data.getStringExtra("result");
-            textView.append(result +"\n");
+            if (textView.getText().toString().equals("누적결과")) {
+                textView.setText(result + "\n");
+            } else {
+                textView.append(result + "\n");
+            }
         }
 
     }
