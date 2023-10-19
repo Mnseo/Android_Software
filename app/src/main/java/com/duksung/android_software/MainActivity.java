@@ -1,18 +1,17 @@
 package com.duksung.android_software;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     Button button;
@@ -22,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     String symbol;
     int num1, num2;
     boolean resultBoolean;
+    ActivityResultLauncher<Intent> launcher; //launcher 객체 참조 변수
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,27 +79,43 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("num1", num1);
                     intent.putExtra("num2", num2);
                     intent.putExtra("symbol", symbol);
-                    startActivityForResult(intent, 0);
+                    launcher.launch(intent);
                 }
 
             }
         });
 
+        //call back 람다 사용
+        launcher = registerForActivityResult( //launcher 객체 생섯ㅇ
+                new ActivityResultContracts.StartActivityForResult(), //Contract 객체 파라미터
+                result -> { //callback 람다 파라미터
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent intent = result.getData();
+                        String data = intent.getStringExtra("data");
+                        if (textView.getText().toString().equals("누적결과")) {
+                            textView.setText(data + "\n");
+                        } else {
+                            textView.append(data + "\n");
+                        }
+                    }
+                }
+        );
+
     }
 
-    @Override
-    protected void onActivityResult(int requestCode ,int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK) {
-            String result = data.getStringExtra("result");
-            if (textView.getText().toString().equals("누적결과")) {
-                textView.setText(result + "\n");
-            } else {
-                textView.append(result + "\n");
-            }
-        }
-
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode ,int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if(resultCode == RESULT_OK) {
+//            String result = data.getStringExtra("result");
+//            if (textView.getText().toString().equals("누적결과")) {
+//                textView.setText(result + "\n");
+//            } else {
+//                textView.append(result + "\n");
+//            }
+//        }
+//
+//    }
 
     private boolean checkTextInput(String a, String b) {
         //둘 다 비어있을때

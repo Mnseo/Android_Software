@@ -49,7 +49,7 @@ public class SecondActivity extends AppCompatActivity {
         textView.setText(result_string);
         button.setOnClickListener(view -> {
             Intent intent = new Intent();
-            intent.putExtra("result", result_string);
+            intent.putExtra("data", result_string);
             setResult(Activity.RESULT_OK, intent);
             finish();  // SecondActivity를 종료합니다.
         });
