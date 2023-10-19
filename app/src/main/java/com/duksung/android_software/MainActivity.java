@@ -9,12 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
     Button button;
     RadioGroup radioGroup;
     EditText editText1, editText2;
+    TextView textView;
     String symbol;
     int num1, num2;
     boolean resultBoolean;
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         editText1 = (EditText) findViewById(R.id.editText1);
         editText2 = (EditText) findViewById(R.id.editText2);
+
+        textView = (TextView) findViewById(R.id.textView2);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -73,11 +79,21 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("num1", num1);
                     intent.putExtra("num2", num2);
                     intent.putExtra("symbol", symbol);
-                    startActivity(intent);
+                    startActivityForResult(intent, 0);
                 }
 
             }
         });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode ,int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
+            String result = data.getStringExtra("result");
+            textView.append(result +"\n");
+        }
 
     }
 
