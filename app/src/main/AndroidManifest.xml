@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,8 +15,8 @@
         android:theme="@style/Theme.Android_Software"
         tools:targetApi="31">
         <activity
-            android:name=".SecondActivity"
-            android:label="Winner"
+            android:name=".DetailActivity"
+            android:label="상세정보"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -22,7 +24,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="Game"
+            android:label="메뉴"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
