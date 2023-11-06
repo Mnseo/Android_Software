@@ -3,6 +3,7 @@ package com.duksung.android_software;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,9 +31,10 @@ public class DetailActivity extends AppCompatActivity {
 
 
         button.setOnClickListener(view -> {
-            String url = "https://www.google.com/search?q=" + Uri.encode(mealName);
-            Intent intent1 = new Intent(Intent.ACTION_VIEW);
-            intent1.setData(Uri.parse(url));
+            Intent intent1 = new Intent();
+            intent1.setAction(Intent.ACTION_WEB_SEARCH);
+            Log.d("meal_Name", mealName);
+            intent1.putExtra("meal_Name", mealName);
             startActivity(intent1);
 
         });
