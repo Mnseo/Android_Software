@@ -23,7 +23,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+//        ImageView imageView = (ImageView) findViewById(R.id.imageView);
         TextView textView = (TextView)findViewById(R.id.textView);
         Button button = (Button) findViewById(R.id.button);
 
@@ -32,8 +32,8 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Integer position = intent.getIntExtra("meal", 0);
         mealName = intent.getStringExtra("meal_name");
-        imageView.setImageResource(meals[position]);
-        textView.setText(mealName);
+//        imageView.setImageResource(meals[position]);
+        textView.setText(mealName + "선택! \n 추가정보를 원하시면 More 버튼 클릭! ");
 
 
         button.setOnClickListener(view -> {
