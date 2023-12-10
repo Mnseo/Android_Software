@@ -17,7 +17,7 @@
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
-            android:label="Advisor2Home"
+            android:label="예매 순위 "
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,29 +30,13 @@
         </activity>
         <activity
             android:name=".DetailActivity"
-            android:label="Employee"
+            android:label="Detailed Info"
             android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
-            android:name=".ProfessorActivity"
-            android:label="Professor"
+            android:name=".OttActivity"
+            android:label="Ott 순위"
             android:exported="false">
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".WebActivity"
-            android:label="Professor"
-            android:exported="false">
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
     </application>
 </manifest>
