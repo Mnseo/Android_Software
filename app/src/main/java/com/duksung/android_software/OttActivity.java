@@ -3,9 +3,7 @@ package com.duksung.android_software;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +26,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class OttActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<String> items; // 영화 이름
     ArrayList<String> urls; // url
@@ -37,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ott);
 
         items = new ArrayList<String>();
         urls = new ArrayList<String>();
-        ListView listView = (ListView) findViewById(R.id.listView2);
+        ListView listView = (ListView) findViewById(R.id.listView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
         listView.setAdapter(adapter);
 
@@ -51,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), items.get(i), Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                intent.putExtra("Movie", items.get(i));
                 intent.putExtra("url", urls.get(i));
                 startActivity(intent);
             }
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void makeRequest() {
-        String url = "https://movie.daum.net/ranking/reservation";
+        String url = "https://movie.daum.net/ranking/ott";
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 url,
@@ -94,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -105,9 +103,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.reservation:
-                // nativeApp 메뉴 아이템을 클릭했을 때
-                Intent intent1 = new Intent(this, OttActivity.class);
-                startActivity(intent1);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
