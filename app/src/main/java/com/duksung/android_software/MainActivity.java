@@ -2,15 +2,6 @@ package com.duksung.android_software;
 
 import android.content.Intent;
 import android.os.Build;
-import android.widget.DatePicker;
-import android.widget.RadioButton;
-import android.widget.TimePicker;
-import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-
-\
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -29,11 +20,10 @@ public class MainActivity extends AppCompatActivity {
     String symbol;
     int num1, num2;
     boolean resultBoolean;
-
+  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      
         setContentView(R.layout.activity_main);
 
         button = (Button) findViewById(R.id.button1);
@@ -66,6 +56,43 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        setContentView(R.layout.activity_main);
+//        Log.i("lifecycle", "Main:onCreate");
+
+        button = (Button) findViewById(R.id.button);
+        rdoDate = (RadioButton) findViewById(R.id.radioButton);
+        rdoTime = (RadioButton) findViewById(R.id.radioButton2);
+
+        timePicker = (TimePicker) findViewById(R.id.timePicker);
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
+        // 처음에는 두 picker를 안보이게 설정
+        timePicker.setVisibility(View.INVISIBLE);
+        datePicker.setVisibility(View.INVISIBLE);
+
+        rdoDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                timePicker.setVisibility(View.INVISIBLE);
+                datePicker.setVisibility(View.VISIBLE);
+            }
+        });
+
+        rdoTime.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                timePicker.setVisibility(View.VISIBLE);
+                datePicker.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
+                @Override
+                public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
+                    date = i + "/" + (i1+1) + "/" + i2;
+                }
+            });
+        }
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,42 +121,33 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-    @Override
-    protected void onActivityResult(int requestCode ,int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK) {
-            String result = data.getStringExtra("result");
-            if (textView.getText().toString().equals("누적결과")) {
-                textView.setText(result + "\n");
-            } else {
-                textView.append(result + "\n");
+                time = timePicker.getHour() + ":" + timePicker.getMinute();
+                String appointment = date + " " + time;
+                Toast.makeText(getApplicationContext(), appointment, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), MemoActivity.class);
+                intent.putExtra("appointment", appointment);
+                startActivity(intent);
             }
-        }
-
+        });
     }
 
-    private boolean checkTextInput(String a, String b) {
-        //둘 다 비어있을때
-        if (a.equals("") && b.equals("")) {
-            Toast.makeText(getApplicationContext(), "숫자를 입력해주세요", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        android.util.Log.i("lifecycle", "Main:onResume");
+    }
 
-        //둘 중 하나만 비어있을때
-        else if (a.equals("") || b.equals("")) {
-            //숫자 1만 비어있을때
-            if (a.equals("") || b.isEmpty() == false) {
-                Toast.makeText(getApplicationContext(), "첫번째 정수를 입력하세요", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            //숫자 2만 비어있을때
-            else if (b.equals("") || a.isEmpty() == false) {
-                Toast.makeText(getApplicationContext(), "두번째 정수를 입력하세요", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        }
-        return true;
+    @Override
+    protected void onStop() {
+        super.onStop();
+        android.util.Log.i("lifecycle", "Main:onStop");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        android.util.Log.i("lifecycle", "Main:onRestart");
     }
 
 }
+

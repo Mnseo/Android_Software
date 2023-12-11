@@ -9,7 +9,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,42 +39,6 @@
         android:maxLines="1"
         android:inputType="numberSigned" />
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/radioBtn1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="+"/>
-
-        <RadioButton
-            android:id="@+id/radioBtn2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="-"/>
-
-        <RadioButton
-            android:id="@+id/radioBtn3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="*"/>
-
-        <RadioButton
-            android:id="@+id/radioBtn4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="/"/>
-
-    </RadioGroup>
 
     <EditText
         android:id="@+id/editText2"
@@ -85,13 +48,6 @@
         android:maxLines="1"
         android:ems="10"
         android:inputType="numberSigned" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="="/>
 
 
     <TextView
