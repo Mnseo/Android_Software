@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -44,6 +45,7 @@ public class AirActivity extends AppCompatActivity {
     ArrayList<String> districtNames;
     ArrayList<String> districtCodes;
     District district;
+    String selectedDistrictCode = null; //마지막으로 선택된 지역 코드
 
 
     @Override
@@ -86,7 +88,6 @@ public class AirActivity extends AppCompatActivity {
         }
     }
 
-
     // 해당 자치구의 MAP을 돌아서 일치하는 name이 있으면 key-value 들고오기
     private String findDistrictCodeByName(String name) {
         for (Map.Entry<String, String> entry : district.getDistrictMap().entrySet()) {
@@ -105,6 +106,7 @@ public class AirActivity extends AppCompatActivity {
     }
 
     private void makeAirRequest(String districtCode) {
+        selectedDistrictCode = districtCode;
         String url = "http://openapi.seoul.go.kr:8088/4c72556674746c7334345973577a68/json/ListAirQualityByDistrictService/1/5/" + districtCode;
         StringRequest request = new StringRequest(
                 Request.Method.GET,
@@ -151,8 +153,8 @@ public class AirActivity extends AppCompatActivity {
                 String pm25 = obj.getString("PM25");
 
                 String output = String.format(
-                        "통합대기환경지수 등급: %s\n 이산화질소: %s\n 오존: %s\n 일산화탄소: %s\n 아황산가스: %s\n 미세먼지: %s\n 초미세먼지: %s",
-                        grade, nitrogen, ozone, carbon, sulfurous, pm10, pm25);
+                        "통합대기환경지수 등급: N/A\n 이산화질소: %s\n 오존: %s\n 일산화탄소: %s\n 아황산가스: %s\n 미세먼지: %s\n 초미세먼지: %s",
+                        nitrogen, ozone, carbon, sulfurous, pm10, pm25);
                 println(output);
             }
         } catch (JSONException e) {
@@ -164,6 +166,20 @@ public class AirActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.reservation) {
+            if (selectedDistrictCode != null) {
+                //selectedDistrictCode가 비어있는게 아니라면
+                makeAirRequest(selectedDistrictCode);
+            } else {
+                Toast.makeText(this, "Please select a district first", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

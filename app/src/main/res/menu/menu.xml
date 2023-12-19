@@ -5,7 +5,8 @@
     tools:context=".AirActivity">
     <item
         android:id="@+id/reservation"
-        android:title="예매/OTT"
+        android:title=""
+        android:icon="@drawable/refresh"
         app:showAsAction="always"/>
 
 </menu>
