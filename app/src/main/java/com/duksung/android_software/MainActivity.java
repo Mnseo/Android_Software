@@ -1,17 +1,15 @@
 package com.duksung.android_software;
 
+import static java.sql.DriverManager.println;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,61 +19,109 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import androidx.appcompat.app.AlertDialog;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayAdapter<String> adapter;
-    ArrayList<String> items; // 영화 이름
-    ArrayList<String> urls; // url
+    EditText editText1, editText2;
+    Button button;
+    String idText, pwText;
+    int responseReturn = 0;
+    boolean resultBoolean; // 입력값 빈값 체크
     static RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("서울 날씨 어때?");
 
-        items = new ArrayList<String>();
-        urls = new ArrayList<String>();
-        ListView listView = (ListView) findViewById(R.id.listView2);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-        listView.setAdapter(adapter);
+        button = (Button) findViewById(R.id.buttonLogin);
+        editText1 = (EditText) findViewById(R.id.editText1);
+        editText2 = (EditText) findViewById(R.id.editText2);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), items.get(i), Toast.LENGTH_LONG).show();
+            public void onClick(View view) {
+                idText = editText1.getText().toString().trim();
+                pwText = editText2.getText().toString().trim();
 
-                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-                intent.putExtra("url", urls.get(i));
-                startActivity(intent);
+                Log.d("idText", idText);
+                Log.d("pwText", pwText);
+                //비어있는 값 확인하기
+                resultBoolean = checkTextInput(idText, pwText);
+                if (resultBoolean == true) {
+                    //값이 비어있지 않으면 volley 요청
+                    makeLoginRequest();
+                }
+
             }
-        });
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        makeRequest();
+        };
+        button.setOnClickListener(listener);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+    }
+    private boolean checkTextInput(String a, String b) {
+        //둘 다 비어있을때
+        if(a.equals("") && b.equals("")) {
+            Toast.makeText(getApplicationContext(), "값을 입력해주세요", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        //둘 중 하나만 비어있을때
+        else if(a.equals("") || b.equals(""))
+        {
+            //숫자 1만 비어있을때
+            if(a.equals("") || b.isEmpty() == false) {
+                Toast.makeText(getApplicationContext(), "아이디를 입력하세요", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            //숫자 2만 비어있을때
+            else if (b.equals("") || a.isEmpty() == false) {
+                Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
     }
 
+    private void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Login Failed!");
+        builder.setMessage("Please try again");
+        builder.setPositiveButton("OK", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
-    public void makeRequest() {
-        String url = "https://movie.daum.net/ranking/reservation";
+    //내부에서만 사용될것 같아 private function으로 설정했습니다
+    public void makeLoginRequest() {
+        String url = "http://203.252.213.36:8080/FinalProject/loginPro.jsp?";
+        url = url + "id=" + idText + "&passwd=" + pwText;
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 url,
                 new Response.Listener<String>() {
+                    //성공시
                     @Override
                     public void onResponse(String response) {
-                        parseHtml(response);
+                        int responseTrim = Integer.parseInt(response.trim());
+                        //response == 1 (로그인 성공)
+                        if (responseTrim==1) {
+                            navigateNextActivity();
+                        }
+                        else if (responseTrim == 0 || responseTrim == -1) {
+                            responseReturn = responseTrim;
+                            showDialog();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
+                    //실패시
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "network error",
-                                Toast.LENGTH_LONG).show();
+                        println("에러 -> " + error.getMessage());
                     }
                 }
         );
@@ -84,33 +130,11 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    public void parseHtml(String html) {
-        Document doc = Jsoup.parse(html);
-        Elements itemElements = doc.select(" strong.tit_item > a");   // XPath *[@id="mainContent"]/div/div[2]/ol/li[1]/div/div[2]/strong/a
-        for(Element element : itemElements) {
-            urls.add(element.attr("href").trim());
-            items.add(element.text().trim());
-        }
-        adapter.notifyDataSetChanged();
+    private void navigateNextActivity() {
+        Intent intent = new Intent(this, WeatherActivity.class);
+        startActivity(intent);
+        //finish() 로그인 화면으로 돌아가야할 상황을 생각하여 주석처리 했습니다
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.reservation:
-                // nativeApp 메뉴 아이템을 클릭했을 때
-                Intent intent1 = new Intent(this, OttActivity.class);
-                startActivity(intent1);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }
+
