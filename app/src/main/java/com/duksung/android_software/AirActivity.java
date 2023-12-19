@@ -45,7 +45,7 @@ public class AirActivity extends AppCompatActivity {
     ArrayList<String> districtNames;
     ArrayList<String> districtCodes;
     District district;
-    String selectedDistrictCode = null; //마지막으로 선택된 지역 코드
+    String selectedDistrictCode = null; //마지막으로 선택된 지역 코드 -> sync를 위해 activity 에서 저장
 
 
     @Override
